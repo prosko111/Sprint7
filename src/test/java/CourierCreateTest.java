@@ -1,16 +1,17 @@
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import api.client.CourierClient;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.equalTo;
 
 
 public class CourierCreateTest extends CourierCreateLoginBaseTest {
     private static final String API_CREATE_COURIER = "api/v1/courier";
     @Test
+    @DisplayName("Получение успешного ответа = 201, на создание курьера")
     public void createCourierSuccessMessage() {
-        given()
-                .body(courier)
-                .when()
-                .post(API_CREATE_COURIER)
+        CourierClient courierClient = new CourierClient();
+        courierClient.createNewCourier(courier)
                 .then()
                 .statusCode(201)
                 .assertThat()
@@ -18,12 +19,11 @@ public class CourierCreateTest extends CourierCreateLoginBaseTest {
     }
 
     @Test
+    @DisplayName("Создание курьера с повторным логином")
     public void createCourierNotUniqueErrorMessage() {
-        ApiHelper.createCourier(courier);
-        given()
-                .body(courier)
-                .when()
-                .post(API_CREATE_COURIER)
+        CourierClient courierClient = new CourierClient();
+        courierClient.createNewCourier(courier);
+        courierClient.createNewCourier(courier)
                 .then()
                 .statusCode(409)
                 .assertThat()
@@ -31,13 +31,11 @@ public class CourierCreateTest extends CourierCreateLoginBaseTest {
     }
 
     @Test
+    @DisplayName("Создание курьера с недостающими данными, пустое поле логина")
     public void createCourierWithoutLoginErrorMessage() {
         courier.setLogin("");
-        ApiHelper.createCourier(courier);
-        given()
-                .body(courier)
-                .when()
-                .post(API_CREATE_COURIER)
+        CourierClient courierClient = new CourierClient();
+        courierClient.createNewCourier(courier)
                 .then()
                 .statusCode(400)
                 .assertThat()
@@ -45,12 +43,11 @@ public class CourierCreateTest extends CourierCreateLoginBaseTest {
     }
 
     @Test
+    @DisplayName("Создание курьера с недостающими данными, пустое поле пароль")
     public void createCourierWithoutPassErrorMessage() {
         courier.setPassword("");
-        given()
-                .body(courier)
-                .when()
-                .post(API_CREATE_COURIER)
+        CourierClient courierClient = new CourierClient();
+        courierClient.createNewCourier(courier)
                 .then()
                 .statusCode(400)
                 .assertThat()

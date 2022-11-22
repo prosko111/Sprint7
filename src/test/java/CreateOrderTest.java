@@ -1,14 +1,16 @@
+import api.client.OrdersClient;
+import api.order.CreateOrder;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import request.CreateOrder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
+
 @RunWith(Parameterized.class)
 public class CreateOrderTest extends SetupTests {
     private static final String API_ORDERS_CREATE = "api/v1/orders";
@@ -40,12 +42,11 @@ public class CreateOrderTest extends SetupTests {
 
 
     @Test
+    @DisplayName("Создание заказа, и проверка обяз полей")
     public void createOrderParamColorsSuccessMessage() {
+        OrdersClient ordersClient = new OrdersClient();
         order.setColor(colors);
-        given()
-                .body(order)
-                .when()
-                .post(API_ORDERS_CREATE)
+        ordersClient.getCorrectNewOrder(order)
                 .then()
                 .statusCode(201)
                 .assertThat()

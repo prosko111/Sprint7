@@ -1,4 +1,4 @@
-package request;
+package api.courier;
 
 public class CreateCourier extends LoginCourier {
     private String firstName;

@@ -1,6 +1,4 @@
-package response;
-
-import request.CreateOrder;
+package api.order;
 
 public class CreateOrderResp extends CreateOrder {
     private Integer id;

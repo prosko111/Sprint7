@@ -1,18 +1,27 @@
+import api.client.CourierClient;
+import api.courier.CreateCourier;
+import api.courier.LoginCourier;
 import org.junit.After;
 import org.junit.Before;
-import request.CreateCourier;
 
-public class CourierCreateLoginBaseTest extends SetupTests{
+public class CourierCreateLoginBaseTest extends SetupTests {
     CreateCourier courier;
+    LoginCourier courierLoginCorrect;
+    LoginCourier courierLoginInvalid;
+
     @Before
     public void createCourier() {
         courier = new CreateCourier("Alesha", "3343", "AleshaName");
-        ApiHelper.deleteCourierIfExist(courier);
+        CourierClient.deleteCourierIfExist(courier);
     }
+
+/*    public void loginInvalid() {
+        courierLoginInvalid = new LoginCourier("Alesha", "");
+    }*/
 
     @After
     public void deleteCourier() {
-        ApiHelper.deleteCourierIfExist(courier);
+        CourierClient.deleteCourierIfExist(courier);
     }
 
 }
